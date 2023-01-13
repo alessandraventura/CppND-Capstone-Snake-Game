@@ -1,5 +1,7 @@
 #include "game.h"
+
 #include <iostream>
+
 #include "SDL.h"
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
@@ -77,9 +79,14 @@ void Game::Update() {
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
-    // Grow snake and increase speed.
+    // Grow snake and increase speed every other time we eat.
     snake.GrowBody();
-    snake.speed += 0.02;
+    if (increase_speed) {
+      snake.speed += 0.02;
+      increase_speed = false;
+    } else {
+      increase_speed = true;
+    }
   }
 }
 

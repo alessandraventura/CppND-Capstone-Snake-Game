@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <random>
+
 #include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
@@ -18,6 +19,7 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
+  bool increase_speed = false;
 
   std::random_device dev;
   std::mt19937 engine;
