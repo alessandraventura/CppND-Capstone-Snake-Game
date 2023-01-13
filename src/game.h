@@ -5,6 +5,7 @@
 
 #include "SDL.h"
 #include "controller.h"
+#include "obstacle.h"
 #include "renderer.h"
 #include "snake.h"
 
