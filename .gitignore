@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+# Others
+*.swp
+*.osm
+!map.osm
+draw.cpp
+test.cpp
+build/
+bin/
+lib/
+.github/**
