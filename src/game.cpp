@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include <iostream>
+#include <memory>
 
 #include "SDL.h"
 
@@ -27,7 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food, obstacle_make);
 
     frame_end = SDL_GetTicks();
 
@@ -67,6 +68,20 @@ void Game::PlaceFood() {
   }
 }
 
+void Game::PlaceObstacles() {
+  SDL_Point center;
+  center.x = random_w(engine);
+  center.y = random_h(engine);
+  Shape shape = Shape::I;  // TODO
+  // if ((snake.body.size() % 3 == 0) && (snake.body.size() > 1)) {
+  std::cout << "obstacle" << std::endl;
+  auto obstacle = std::make_unique<Obstacle>(shape, center);
+  obstacle_make = obstacle->MakeObstacle();
+  // } else {
+  //   std::cout << "no place" << std::endl;
+  // }
+}
+
 void Game::Update() {
   if (!snake.alive) return;
 
@@ -81,6 +96,7 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed every other time we eat.
     snake.GrowBody();
+    PlaceObstacles();
     if (increase_speed) {
       snake.speed += 0.01;
       increase_speed = false;
