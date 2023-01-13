@@ -82,7 +82,7 @@ void Game::Update() {
     // Grow snake and increase speed every other time we eat.
     snake.GrowBody();
     if (increase_speed) {
-      snake.speed += 0.02;
+      snake.speed += 0.01;
       increase_speed = false;
     } else {
       increase_speed = true;
