@@ -115,13 +115,15 @@ void Game::Update() {
   int new_y = static_cast<int>(snake.head_y);
 
   // Check if there's an obstacle over here
-  if (IsInObstacleVector(new_x, new_y)) {  // TODO : check the first iteration
+  if (IsInObstacleVector(new_x, new_y)) {
     std::cout << "Game Over" << std::endl;
     snake.alive = false;
     return;
   } else {
-    if ((snake.body.size() % 3 == 0) && (snake.body.size() > 1)) {
+    if ((snake.body.size() % 3 == 0) && (snake.body.size() > 1) &&
+        snake.ready_for_new_obstacle) {
       PlaceNewObstacle();
+      snake.ready_for_new_obstacle = false;
     }
   }
 
