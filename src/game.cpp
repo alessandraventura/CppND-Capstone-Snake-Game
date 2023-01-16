@@ -111,9 +111,10 @@ void Game::PlaceNewObstacle() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    // Check that the location is free before placing
+    // Check that the location and adiacent locations are free before placing
     // a new obstacle.
-    if (CheckLocationFree(x, y)) {
+    if (CheckLocationFree(x, y) && CheckLocationFree(x + 1, y) &&
+        CheckLocationFree(x - 1, y) && CheckLocationFree(x, y + 1)&& CheckLocationFree(x, y - 1)) {
       new_obstacle.x = x;
       new_obstacle.y = y;
       obstacles.emplace_back(Obstacle(RandomShape(), new_obstacle));
