@@ -114,16 +114,14 @@ void Game::PlaceNewObstacle() {
     // Check that the location and adjacent locations are free before placing
     // a new obstacle.
     if (CheckLocationFree(x, y) && CheckLocationFree(x + 1, y) &&
-        CheckLocationFree(x - 1, y) && CheckLocationFree(x, y + 1)&& CheckLocationFree(x, y - 1)) {
+        CheckLocationFree(x - 1, y) && CheckLocationFree(x, y + 1) &&
+        CheckLocationFree(x, y - 1)) {
       new_obstacle.x = x;
       new_obstacle.y = y;
       obstacles.emplace_back(Obstacle(RandomShape(), new_obstacle));
       return;
     }
   }
-  // seleziona random centro
-  // controlla che il centro non sia gia' parte della lista di punti nel
-  // vettore obstacle aggiungi il centro ed i punti al vettore di obstacle
 }
 
 void Game::Update() {
