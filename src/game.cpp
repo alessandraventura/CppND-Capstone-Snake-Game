@@ -94,14 +94,14 @@ Shape Game::RandomShape() {
   std::random_device random_shape;
   std::uniform_int_distribution<int> dist(1, 3);
   int shape = dist(random_shape);
-  // switch (shape) {
-  //   case 1:
-  //     return Shape::I;
-  //   case 2:
-  //     return Shape::L;
-  //   case 3:
-  //     return Shape::T;
-  // }
+  switch (shape) {
+    case 1:
+      return Shape::I;
+    case 2:
+      return Shape::L;
+    case 3:
+      return Shape::T;
+  }
   return Shape::T;
 }
 
