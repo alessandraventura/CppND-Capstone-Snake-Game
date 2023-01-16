@@ -4,13 +4,13 @@ std::vector<SDL_Point> Obstacle::MakeObstacle() {
   std::vector<SDL_Point> obstacle;
   switch (shape) {
     case Shape::L:
-      // make shape L
+      MakeL();
       break;
     case Shape::T:
-      // make shape T
+      MakeT();
       break;
     case Shape::I:
-      // make shape I
+      MakeI();
       break;
   }
   return obstacle;
