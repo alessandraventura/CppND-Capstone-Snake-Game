@@ -1,8 +1,7 @@
 #include "game.h"
 
 #include <iostream>
-#include <random>
-#include <vector>
+#include <memory>
 
 #include "SDL.h"
 
@@ -29,10 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    if (!snake.alive) {
-      return;
-    }
-    renderer.Render(snake, food, obstacles);
+    renderer.Render(snake, food, obstacle_make);
 
     frame_end = SDL_GetTicks();
 
@@ -72,58 +68,18 @@ void Game::PlaceFood() {
   }
 }
 
-bool Game::IsInObstacleVector(int const &x, int const &y) {
-  for (auto &i : obstacles) {
-    std::vector<SDL_Point> points = i.GetObstaclePoints();
-    for (auto &j : points) {
-      if (j.x == x && j.y == y) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-bool Game::CheckLocationFree(int const &x, int const &y) {
-  if (!snake.SnakeCell(x, y) && (food.x != x) && (food.y != y) &&
-      !IsInObstacleVector(x, y)) {
-    return true;
-  }
-  return false;
-}
-
-Shape Game::RandomShape() {
-  std::random_device random_shape;
-  std::uniform_int_distribution<int> dist(1, 3);
-  int shape = dist(random_shape);
-  switch (shape) {
-    case 1:
-      return Shape::I;
-    case 2:
-      return Shape::L;
-    case 3:
-      return Shape::T;
-  }
-  return Shape::T;
-}
-
-void Game::PlaceNewObstacle() {
-  int x, y;
-  SDL_Point new_obstacle;
-  while (true) {
-    x = random_w(engine);
-    y = random_h(engine);
-    // Check that the location and adjacent locations are free before placing
-    // a new obstacle.
-    if (CheckLocationFree(x, y) && CheckLocationFree(x + 1, y) &&
-        CheckLocationFree(x - 1, y) && CheckLocationFree(x, y + 1) &&
-        CheckLocationFree(x, y - 1)) {
-      new_obstacle.x = x;
-      new_obstacle.y = y;
-      obstacles.emplace_back(Obstacle(RandomShape(), new_obstacle));
-      return;
-    }
-  }
+void Game::PlaceObstacles() {
+  SDL_Point center;
+  center.x = random_w(engine);
+  center.y = random_h(engine);
+  Shape shape = Shape::I;  // TODO
+  // if ((snake.body.size() % 3 == 0) && (snake.body.size() > 1)) {
+  std::cout << "obstacle" << std::endl;
+  auto obstacle = std::make_unique<Obstacle>(shape, center);
+  obstacle_make = obstacle->MakeObstacle();
+  // } else {
+  //   std::cout << "no place" << std::endl;
+  // }
 }
 
 void Game::Update() {
@@ -158,6 +114,7 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed every other time we eat.
     snake.GrowBody();
+    PlaceObstacles();
     if (increase_speed) {
       snake.speed += 0.01;
       increase_speed = false;
