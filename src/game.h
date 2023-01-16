@@ -31,6 +31,8 @@ class Game {
   int score{0};
 
   void PlaceFood();
+  void PlaceNewObstacle();
+  bool CheckLocationFree(int const &x, int const &y);
   void Update();
 };
 

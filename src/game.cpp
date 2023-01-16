@@ -27,8 +27,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    obstacle.x = 2;
-    obstacle.y = 3;
+    // obstacle.x = 2;
+    // obstacle.y = 3;
     renderer.Render(snake, food, obstacle);
 
     frame_end = SDL_GetTicks();
@@ -69,6 +69,39 @@ void Game::PlaceFood() {
   }
 }
 
+// bool Game::CheckObstacleVector(){
+//   for (auto &i : obstacle){
+//     if
+//   }
+// }
+
+bool Game::CheckLocationFree(int const &x, int const &y) {
+  if (!snake.SnakeCell(x, y) && (food.x != x) && (food.y != y) /*&&
+      CheckObstacleVector(x, y)*/) {
+    return true;
+  }
+  return false;
+}
+
+void Game::PlaceNewObstacle() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    // Check that the location is not occupied by a snake item before placing
+    // food.
+    if (CheckLocationFree(x, y)) {
+      obstacle.x = x;
+      obstacle.y = y;
+      return;
+    }
+  }
+  // seleziona random centro
+  // controlla che il centro non sia gia' parte della lista di punti nel vettore
+  // obstacle
+  // aggiungi il centro ed i punti al vettore di obstacle
+}
+
 void Game::Update() {
   if (!snake.alive) return;
 
@@ -76,6 +109,17 @@ void Game::Update() {
 
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
+
+  // Check if there's an obstacle over here
+  if (obstacle.x == new_x && obstacle.y == new_y) {
+    std::cout << "Game Over" << std::endl;
+    snake.alive = false;
+    // return;
+  } else {
+    if ((snake.body.size() % 3 == 0) && (snake.body.size() > 1)) {
+      PlaceNewObstacle();
+    }
+  }
 
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
