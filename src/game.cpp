@@ -1,6 +1,8 @@
 #include "game.h"
 
 #include <iostream>
+#include <random>
+#include <vector>
 
 #include "SDL.h"
 
@@ -70,8 +72,11 @@ void Game::PlaceFood() {
 
 bool Game::IsInObstacleVector(int const &x, int const &y) {
   for (auto &i : obstacles) {
-    if (i.x == x && i.y == y) {
-      return true;
+    std::vector<SDL_Point> points = i.GetObstaclePoints();
+    for (auto &j : points) {
+      if (j.x == x && j.y == y) {
+        return true;
+      }
     }
   }
   return false;
@@ -85,6 +90,21 @@ bool Game::CheckLocationFree(int const &x, int const &y) {
   return false;
 }
 
+Shape Game::RandomShape() {
+  std::random_device random_shape;
+  std::uniform_int_distribution<int> dist(1, 3);
+  int shape = dist(random_shape);
+  // switch (shape) {
+  //   case 1:
+  //     return Shape::I;
+  //   case 2:
+  //     return Shape::L;
+  //   case 3:
+  //     return Shape::T;
+  // }
+  return Shape::T;
+}
+
 void Game::PlaceNewObstacle() {
   int x, y;
   SDL_Point new_obstacle;
@@ -96,14 +116,13 @@ void Game::PlaceNewObstacle() {
     if (CheckLocationFree(x, y)) {
       new_obstacle.x = x;
       new_obstacle.y = y;
-      obstacles.emplace_back(new_obstacle);
+      obstacles.emplace_back(Obstacle(RandomShape(), new_obstacle));
       return;
     }
   }
   // seleziona random centro
-  // controlla che il centro non sia gia' parte della lista di punti nel vettore
-  // obstacle
-  // aggiungi il centro ed i punti al vettore di obstacle
+  // controlla che il centro non sia gia' parte della lista di punti nel
+  // vettore obstacle aggiungi il centro ed i punti al vettore di obstacle
 }
 
 void Game::Update() {

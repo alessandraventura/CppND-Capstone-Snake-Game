@@ -21,7 +21,7 @@ class Game {
   Snake snake;
   SDL_Point food;
   // SDL_Point obstacle;
-  std::vector<SDL_Point> obstacles;
+  std::vector<Obstacle> obstacles;
   bool increase_speed = false;
 
   std::random_device dev;
@@ -36,6 +36,8 @@ class Game {
   bool CheckLocationFree(int const &x, int const &y);
   bool IsInObstacleVector(int const &x, int const &y);
   void Update();
+
+  Shape RandomShape();
 };
 
 #endif

@@ -1,19 +1,17 @@
 #include "obstacle.h"
 
-std::vector<SDL_Point> Obstacle::MakeObstacle() {
-  std::vector<SDL_Point> obstacle;
+void Obstacle::MakeObstacle() {
   switch (shape) {
     case Shape::L:
-      MakeL();
+      obstacle = MakeL();
       break;
     case Shape::T:
-      MakeT();
+      obstacle = MakeT();
       break;
     case Shape::I:
-      MakeI();
+      obstacle = MakeI();
       break;
   }
-  return obstacle;
 }
 
 std::vector<SDL_Point> Obstacle::MakeL() {
@@ -21,10 +19,10 @@ std::vector<SDL_Point> Obstacle::MakeL() {
   SDL_Point top;
   SDL_Point right;
 
-  top.x = center_position.x;        // TODO
-  top.y = center_position.y + 1;    // TODO
-  right.x = center_position.x + 1;  // TODO
-  right.y = center_position.y;      // TODO
+  top.x = center_position.x;
+  top.y = center_position.y - 1;
+  right.x = center_position.x + 1;
+  right.y = center_position.y;
 
   L.emplace_back(center_position);
   L.emplace_back(top);
@@ -35,22 +33,21 @@ std::vector<SDL_Point> Obstacle::MakeL() {
 
 std::vector<SDL_Point> Obstacle::MakeT() {
   std::vector<SDL_Point> T;
-  SDL_Point left;
-  SDL_Point right;
   SDL_Point bottom;
+  SDL_Point right;
+  SDL_Point left;
 
-  left.x = center_position.x - 1;    // TODO
-  left.x = center_position.y;        // TODO
-  right.x = center_position.x + 1;   // TODO
-  right.x = center_position.y;       // TODO
-  bottom.x = center_position.x;      // TODO
-  bottom.x = center_position.y + 1;  // TODO
-  bottom.x = center_position.y + 1;  // TODO
+  bottom.x = center_position.x;
+  bottom.y = center_position.y + 1;
+  right.x = center_position.x + 1;
+  right.y = center_position.y;
+  left.x = center_position.x - 1;
+  left.y = center_position.y;
 
   T.emplace_back(center_position);
-  T.emplace_back(left);
-  T.emplace_back(right);
   T.emplace_back(bottom);
+  T.emplace_back(right);
+  T.emplace_back(left);
 
   return T;
 }
@@ -60,10 +57,10 @@ std::vector<SDL_Point> Obstacle::MakeI() {
   SDL_Point top;
   SDL_Point bottom;
 
-  top.x = center_position.x;         // TODO
-  top.y = center_position.y + 1;     // TODO
-  bottom.x = center_position.x;      // TODO
-  bottom.y = center_position.y - 1;  // TODO
+  top.x = center_position.x;
+  top.y = center_position.y + 1;
+  bottom.x = center_position.x;
+  bottom.y = center_position.y - 1;
 
   I.emplace_back(center_position);
   I.emplace_back(top);
