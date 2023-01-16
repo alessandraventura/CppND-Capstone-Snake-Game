@@ -28,7 +28,6 @@ class Snake {
   float head_x;
   float head_y;
   std::vector<SDL_Point> body;
-  bool ready_for_new_obstacle = true;
 
  private:
   void UpdateHead();

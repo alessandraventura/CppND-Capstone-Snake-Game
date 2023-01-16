@@ -12,7 +12,6 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)) {
   PlaceFood();
-  PlaceNewObstacle();
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -128,7 +127,10 @@ void Game::PlaceNewObstacle() {
 }
 
 void Game::Update() {
-  if (!snake.alive) return;
+  if (!snake.alive) {
+    std::cout << "Game Over" << std::endl;
+    return;
+  }
 
   snake.Update();
 
@@ -143,15 +145,16 @@ void Game::Update() {
     return;
   } else {
     if ((snake.body.size() % 3 == 0) && (snake.body.size() > 1) &&
-        snake.ready_for_new_obstacle) {
+        place_obstacle_counter == 3) {
       PlaceNewObstacle();
-      snake.ready_for_new_obstacle = false;
+      place_obstacle_counter = 0;
     }
   }
 
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
     score++;
+    place_obstacle_counter++;
     PlaceFood();
     // Grow snake and increase speed every other time we eat.
     snake.GrowBody();
