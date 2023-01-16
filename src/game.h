@@ -20,6 +20,7 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
+  SDL_Point obstacle;
   bool increase_speed = false;
 
   std::random_device dev;
