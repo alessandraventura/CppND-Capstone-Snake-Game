@@ -30,6 +30,9 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
+    if (!snake.alive) {
+      return;
+    }
     renderer.Render(snake, food, obstacles);
 
     frame_end = SDL_GetTicks();
@@ -136,6 +139,7 @@ void Game::Update() {
   if (IsInObstacleVector(new_x, new_y)) {
     std::cout << "Game Over" << std::endl;
     snake.alive = false;
+
     return;
   } else {
     if ((snake.body.size() % 3 == 0) && (snake.body.size() > 1) &&
