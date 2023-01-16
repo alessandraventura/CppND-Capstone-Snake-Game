@@ -10,6 +10,7 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)) {
   PlaceFood();
+  PlaceNewObstacle();
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -27,9 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    // obstacle.x = 2;
-    // obstacle.y = 3;
-    renderer.Render(snake, food, obstacle);
+    renderer.Render(snake, food, obstacles);
 
     frame_end = SDL_GetTicks();
 
@@ -69,15 +68,18 @@ void Game::PlaceFood() {
   }
 }
 
-// bool Game::CheckObstacleVector(){
-//   for (auto &i : obstacle){
-//     if
-//   }
-// }
+bool Game::IsInObstacleVector(int const &x, int const &y) {
+  for (auto &i : obstacles) {
+    if (i.x == x && i.y == y) {
+      return true;
+    }
+  }
+  return false;
+}
 
 bool Game::CheckLocationFree(int const &x, int const &y) {
-  if (!snake.SnakeCell(x, y) && (food.x != x) && (food.y != y) /*&&
-      CheckObstacleVector(x, y)*/) {
+  if (!snake.SnakeCell(x, y) && (food.x != x) && (food.y != y) &&
+      !IsInObstacleVector(x, y)) {
     return true;
   }
   return false;
@@ -85,14 +87,16 @@ bool Game::CheckLocationFree(int const &x, int const &y) {
 
 void Game::PlaceNewObstacle() {
   int x, y;
+  SDL_Point new_obstacle;
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
-    // food.
+    // Check that the location is free before placing
+    // a new obstacle.
     if (CheckLocationFree(x, y)) {
-      obstacle.x = x;
-      obstacle.y = y;
+      new_obstacle.x = x;
+      new_obstacle.y = y;
+      obstacles.emplace_back(new_obstacle);
       return;
     }
   }
@@ -111,10 +115,10 @@ void Game::Update() {
   int new_y = static_cast<int>(snake.head_y);
 
   // Check if there's an obstacle over here
-  if (obstacle.x == new_x && obstacle.y == new_y) {
+  if (IsInObstacleVector(new_x, new_y)) {  // TODO : check the first iteration
     std::cout << "Game Over" << std::endl;
     snake.alive = false;
-    // return;
+    return;
   } else {
     if ((snake.body.size() % 3 == 0) && (snake.body.size() > 1)) {
       PlaceNewObstacle();
