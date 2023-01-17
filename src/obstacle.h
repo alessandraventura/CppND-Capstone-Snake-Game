@@ -14,10 +14,11 @@ class Obstacle {
   }
   ~Obstacle(){};
 
-  void MakeObstacle();
   std::vector<SDL_Point> GetObstaclePoints() const { return obstacle; }
 
  protected:
+  void MakeObstacle();
+
  private:
   std::vector<SDL_Point> MakeL();
   std::vector<SDL_Point> MakeT();
