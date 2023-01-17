@@ -14,7 +14,7 @@ class Renderer {
   ~Renderer();
 
   void Render(Snake const snake, SDL_Point const &food,
-              std::vector<SDL_Point> const &obstacle_make);
+              std::vector<Obstacle> const &obstacles);
   void UpdateWindowTitle(int score, int fps);
 
  private:

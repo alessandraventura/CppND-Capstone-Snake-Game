@@ -20,7 +20,7 @@ class Game {
  private:
   Snake snake;
   SDL_Point food;
-  std::vector<SDL_Point> obstacle_make;
+  std::vector<Obstacle> obstacles;
   bool increase_speed = false;
 
   std::random_device dev;
@@ -32,7 +32,9 @@ class Game {
   int place_obstacle_counter = 0;
 
   void PlaceFood();
-  void PlaceObstacles();
+  void PlaceNewObstacle();
+  bool CheckLocationFree(int const &x, int const &y);
+  bool IsInObstacleVector(int const &x, int const &y);
   void Update();
 
   Shape RandomShape();
