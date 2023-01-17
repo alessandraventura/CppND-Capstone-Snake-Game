@@ -20,7 +20,7 @@ cmake .. && make
 
 ## Project description
 The project consists of the snake game.
-To the simple implementation of the game, obstacles have been added. Every time the snake grows of 3 units, an obstacle is added.
+To the simple implementation of the game, which can be found at https://github.com/udacity/CppND-Capstone-Snake-Game, obstacles have been added. Every time the snake grows of 3 units, an obstacle is added.
 The obstacle is added at a random location, and is randomly shaped as an L, an I, or a T.
 If the snake hits an obstacle it dies and the game is over. When this happens the window will close automatically and the score is displayed on terminal.
 
